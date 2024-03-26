@@ -31,10 +31,10 @@
               "client_type": 3
             },
             {
-              "client_id": "480772974650-pqo6bh11r20v5d3hufkuj6e0qm30ivkp.apps.googleusercontent.com",
+              "client_id": "480772974650-0kpb1sgvpv7oib7c4t7p7dlkggnh1s7c.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.myFirstFirebaseProject"
+                "bundle_id": "com.example.gadgetShop"
               }
             }
           ]
@@ -67,10 +67,10 @@
               "client_type": 3
             },
             {
-              "client_id": "480772974650-pqo6bh11r20v5d3hufkuj6e0qm30ivkp.apps.googleusercontent.com",
+              "client_id": "480772974650-0kpb1sgvpv7oib7c4t7p7dlkggnh1s7c.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.myFirstFirebaseProject"
+                "bundle_id": "com.example.gadgetShop"
               }
             }
           ]

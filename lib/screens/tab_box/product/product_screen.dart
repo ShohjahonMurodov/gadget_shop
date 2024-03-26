@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:gadget_shop/data/category/category_models.dart';
 import 'package:gadget_shop/data/local/local_varibalse.dart';
@@ -5,6 +6,7 @@ import 'package:gadget_shop/data/notification/notification_models.dart';
 import 'package:gadget_shop/screens/add/add_screen.dart';
 import 'package:gadget_shop/screens/category_input/category_input_screen.dart';
 import 'package:gadget_shop/screens/tab_box/product/widgets/category_items.dart';
+import 'package:gadget_shop/services/local_notification_service.dart';
 import 'package:gadget_shop/utils/colors/app_colors.dart';
 import 'package:gadget_shop/utils/size/size_utils.dart';
 import 'package:gadget_shop/view_models/category_view/category_view_model.dart';
@@ -19,6 +21,51 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
+  String fcmToken = "";
+
+  void init() async {
+    fcmToken = await FirebaseMessaging.instance.getToken() ?? "";
+    debugPrint("FCM TOKEN: $fcmToken");
+    final token = await FirebaseMessaging.instance.getAPNSToken();
+    debugPrint("getAPNSToken: ${token.toString()}");
+    LocalNotificationService.localNotificationService;
+    //Foreground
+    FirebaseMessaging.onMessage.listen(
+      (RemoteMessage remoteMessage) {
+        if (remoteMessage.notification != null) {
+          LocalNotificationService().showNatification(
+            title: remoteMessage.notification!.title!,
+            body: remoteMessage.notification!.body!,
+            id: DateTime.now().second.toInt(),
+          );
+        }
+        debugPrint(
+            "FOREGROUND NOTIFICATION: ${remoteMessage.notification!.title}");
+      },
+    );
+    //Background
+    FirebaseMessaging.onMessageOpenedApp.listen(
+      (RemoteMessage remoteMessage) {
+        debugPrint(
+            "ON MESSAGE OPENED APP: ${remoteMessage.notification!.title}");
+      },
+    );
+    //Terminated
+    FirebaseMessaging.instance.getInitialMessage().then(
+      (message) {
+        if (message != null) {
+          debugPrint("TERMINATED: ${message.notification?.title}");
+        }
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    init();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

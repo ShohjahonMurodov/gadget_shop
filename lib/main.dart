@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:gadget_shop/screens/splash/splash_screen.dart';
 import 'package:gadget_shop/services/firebase_options.dart';
+import 'package:gadget_shop/screens/splash/splash_screen.dart';
 import 'package:gadget_shop/services/local_notification_service.dart';
 import 'package:gadget_shop/view_models/auth_view/auth_view_models.dart';
 import 'package:gadget_shop/view_models/category_view/category_view_model.dart';
