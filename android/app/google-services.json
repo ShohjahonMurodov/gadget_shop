@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "480772974650",
+    "project_id": "my-first-project-e3b10",
+    "storage_bucket": "my-first-project-e3b10.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:480772974650:android:ce8fcc37d13e58e5a32d03",
+        "android_client_info": {
+          "package_name": "com.example.gadget_shop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "480772974650-jdkk05hob1v3m21e6cmca7el69sot1ep.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5OtWXa0nIv_xp0O40iTtFUrK6Wqrb95o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "480772974650-jdkk05hob1v3m21e6cmca7el69sot1ep.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "480772974650-pqo6bh11r20v5d3hufkuj6e0qm30ivkp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.myFirstFirebaseProject"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:480772974650:android:19e466e9205bda61a32d03",
+        "android_client_info": {
+          "package_name": "com.example.my_first_firebase_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "480772974650-jdkk05hob1v3m21e6cmca7el69sot1ep.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5OtWXa0nIv_xp0O40iTtFUrK6Wqrb95o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "480772974650-jdkk05hob1v3m21e6cmca7el69sot1ep.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "480772974650-pqo6bh11r20v5d3hufkuj6e0qm30ivkp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.myFirstFirebaseProject"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
