@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:gadget_shop/services/firebase_options.dart';
 import 'package:gadget_shop/screens/splash/splash_screen.dart';
@@ -11,12 +12,20 @@ import 'package:gadget_shop/view_models/product_view/product_view_model.dart';
 import 'package:gadget_shop/view_models/tab_view/tab_view_models.dart';
 import 'package:provider/provider.dart';
 
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  debugPrint(
+      "BACKGROUND MODE DA PUSH NOTIFICATION KELDI:${message.notification!.title}");
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await configureLocalTimeZone();
   LocalNotificationService().init();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FirebaseMessaging.instance.subscribeToTopic("news");
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   runApp(
     MultiProvider(
       providers: [
