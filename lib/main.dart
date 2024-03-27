@@ -7,6 +7,7 @@ import 'package:gadget_shop/services/firebase_options.dart';
 import 'package:gadget_shop/services/local_notification_service.dart';
 import 'package:gadget_shop/view_models/auth_view/auth_view_models.dart';
 import 'package:gadget_shop/view_models/category_view/category_view_model.dart';
+import 'package:gadget_shop/view_models/image_view/image_view_model.dart';
 import 'package:gadget_shop/view_models/message_view/message_view_model.dart';
 import 'package:gadget_shop/view_models/product_view/product_view_model.dart';
 import 'package:gadget_shop/view_models/tab_view/tab_view_models.dart';
@@ -36,6 +37,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => ProductsViewModel()),
         ChangeNotifierProvider(create: (_) => MessageViewModels()),
         ChangeNotifierProvider(create: (_) => UserViewModel()),
+        ChangeNotifierProvider(create: (_) => ImageViewModel()),
       ],
       child: const MyApp(),
     ),

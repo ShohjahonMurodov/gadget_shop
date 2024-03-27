@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:gadget_shop/data/category/category_models.dart';
 import 'package:gadget_shop/data/local/local_varibalse.dart';
 import 'package:gadget_shop/data/notification/notification_models.dart';
-import 'package:gadget_shop/data/user/user_model.dart';
 import 'package:gadget_shop/screens/add/add_screen.dart';
 import 'package:gadget_shop/screens/category_input/category_input_screen.dart';
 import 'package:gadget_shop/screens/news/news_screen.dart';
@@ -105,7 +104,7 @@ class _ProductScreenState extends State<ProductScreen> {
         ],
       ),
       backgroundColor: AppColors.c_FDFEFF,
-      body: StreamBuilder<List<CategoryModels>>(
+      body: StreamBuilder<List<CategoryModel>>(
         stream: context.read<CategoriesViewModel>().listenCategories(),
         builder: (context, data) {
           if (data.hasError) {
@@ -116,7 +115,7 @@ class _ProductScreenState extends State<ProductScreen> {
             );
           }
           if (data.hasData) {
-            List<CategoryModels> list = data.data as List<CategoryModels>;
+            List<CategoryModel> list = data.data as List<CategoryModel>;
             return ListView(
               children: [
                 Padding(
@@ -138,6 +137,7 @@ class _ProductScreenState extends State<ProductScreen> {
                         list.length,
                         (index) => CategoryItems(
                           text: list[index].categoryName,
+                          image: list[index].imageUrl,
                           onTap: () {
                             Navigator.push(
                               context,

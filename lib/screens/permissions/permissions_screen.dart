@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gadget_shop/screens/permissions/widgets/permission_items.dart';
 import 'package:gadget_shop/screens/splash/splash_screen.dart';
 import 'package:gadget_shop/utils/colors/app_colors.dart';
@@ -29,8 +27,8 @@ class _PermissionsScreenState extends State<PermissionsScreen> {
           "Permissions",
           style: TextStyle(
             color: Colors.black,
-            fontSize: 20.w,
-            fontWeight: FontWeight.w500,
+            fontSize: 25.w,
+            fontWeight: FontWeight.w700,
           ),
         ),
       ),

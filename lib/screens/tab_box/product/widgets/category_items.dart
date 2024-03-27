@@ -8,9 +8,11 @@ class CategoryItems extends StatelessWidget {
       {super.key,
       required this.text,
       required this.onTap,
-      required this.onLongTap});
+      required this.onLongTap,
+      required this.image});
 
   final String text;
+  final String image;
   final VoidCallback onTap;
   final VoidCallback onLongTap;
 
@@ -46,6 +48,7 @@ class CategoryItems extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Image.network(image),
               Text(
                 text,
                 style: TextStyle(
