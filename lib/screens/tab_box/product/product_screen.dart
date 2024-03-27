@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:gadget_shop/data/category/category_models.dart';
 import 'package:gadget_shop/data/local/local_varibalse.dart';
 import 'package:gadget_shop/data/notification/notification_models.dart';
+import 'package:gadget_shop/data/user/user_model.dart';
 import 'package:gadget_shop/screens/add/add_screen.dart';
 import 'package:gadget_shop/screens/category_input/category_input_screen.dart';
 import 'package:gadget_shop/screens/news/news_screen.dart';
+import 'package:gadget_shop/screens/people/people_screen.dart';
 import 'package:gadget_shop/screens/tab_box/product/widgets/category_items.dart';
 import 'package:gadget_shop/services/local_notification_service.dart';
 import 'package:gadget_shop/utils/colors/app_colors.dart';
@@ -72,6 +74,19 @@ class _ProductScreenState extends State<ProductScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.transparent,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const PeopleScreen(),
+              ),
+            );
+          },
+          icon: const Icon(
+            Icons.account_circle_rounded,
+          ),
+        ),
         actions: [
           IconButton(
             onPressed: () {

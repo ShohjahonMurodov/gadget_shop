@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:gadget_shop/data/user/user_model.dart';
 import 'package:gadget_shop/screens/login/login_screen.dart';
 import 'package:gadget_shop/screens/tab_box/tab_box_screen.dart';
 import 'package:gadget_shop/utils/constants/app_constants.dart';
@@ -26,6 +29,13 @@ class AuthViewModel extends ChangeNotifier {
 
         if (userCredential.user != null) {
           await FirebaseAuth.instance.currentUser!.updateDisplayName(username);
+          _insertUser(email: email, name: username, password: password);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const TabBoxScreen(),
+            ),
+          );
         }
         _notify(false);
         if (!context.mounted) return;
@@ -150,6 +160,29 @@ class AuthViewModel extends ChangeNotifier {
         ),
       );
     }
+  }
+
+  Future<void> _insertUser({
+    required String email,
+    required String name,
+    required String password,
+  }) async {
+    var tokId = await FirebaseMessaging.instance.getToken();
+    UserModel userModel = UserModel(
+      email: email,
+      docId: "",
+      password: password,
+      tokenId: tokId ?? "",
+    );
+
+    var docId = await FirebaseFirestore.instance
+        .collection(AppConstants.userTable)
+        .add(userModel.toJson());
+
+    await FirebaseFirestore.instance
+        .collection(AppConstants.userTable)
+        .doc(docId.id)
+        .update({"doc_id": docId.id});
   }
 
   _notify(bool value) {

@@ -12,6 +12,8 @@ import 'package:provider/provider.dart';
 class NewsScreen extends StatefulWidget {
   const NewsScreen({super.key});
 
+  // final UserModel userModel;
+
   @override
   State<NewsScreen> createState() => _NewsScreenState();
 }

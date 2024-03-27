@@ -10,4 +10,5 @@ class AppConstants {
       "699471060311-boktfei0alnfbjc140gako8vvncn4opj.apps.googleusercontent.com";
   static String categories = "categories";
   static String products = "products";
+  static String userTable = "users";
 }
