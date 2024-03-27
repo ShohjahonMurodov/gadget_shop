@@ -14,7 +14,9 @@ import 'package:gadget_shop/view_models/message_view/message_view_model.dart';
 import 'package:provider/provider.dart';
 
 class AddScreen extends StatefulWidget {
-  const AddScreen({super.key});
+  const AddScreen({super.key, required this.fcmToken});
+
+  final String fcmToken;
 
   @override
   State<AddScreen> createState() => _AddScreenState();

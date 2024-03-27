@@ -4,9 +4,10 @@ import 'package:gadget_shop/data/local/local_varibalse.dart';
 import 'package:gadget_shop/data/notification/notification_models.dart';
 import 'package:gadget_shop/screens/change/widgets/change_textformfield.dart';
 import 'package:gadget_shop/screens/widgets/global_blue_button.dart';
-import 'package:gadget_shop/screens/widgets/textformfield_items.dart';
 import 'package:gadget_shop/utils/constants/app_constants.dart';
 import 'package:gadget_shop/utils/size/size_utils.dart';
+import 'package:gadget_shop/view_models/message_view/message_view_model.dart';
+import 'package:provider/provider.dart';
 
 class NewsScreen extends StatefulWidget {
   const NewsScreen({super.key});
@@ -71,6 +72,9 @@ class _NewsScreenState extends State<NewsScreen> {
                     id: idContLocal,
                     name: "Hammaga yangilik yuborildi!",
                   );
+                  context
+                      .read<MessageViewModels>()
+                      .addMessage(notificationModels: notificationModels);
                   idContLocal++;
                   Navigator.pop(context);
                 },

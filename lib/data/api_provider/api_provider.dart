@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 class ApiProvider {
-  Future<String> sendNotificationToUsers({
+   Future<String> sendNotificationToUsers({
     String? topicName,
     String? fcmToken,
     required String title,

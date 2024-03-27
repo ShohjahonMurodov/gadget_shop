@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gadget_shop/data/api_provider/api_provider.dart';
 import 'package:gadget_shop/data/local/local_varibalse.dart';
 import 'package:gadget_shop/data/notification/notification_models.dart';
 import 'package:gadget_shop/data/product/product_model.dart';
@@ -118,12 +117,6 @@ class _CategoryInputScreenState extends State<CategoryInputScreen> {
                                               ),
                                             ),
                                             onPressed: () {
-                                              ApiProvider()
-                                                  .sendNotificationToUsers(
-                                                fcmToken: widget.fcmToken,
-                                                title: "Product o'chirildi!",
-                                                body: "",
-                                              );
                                               context
                                                   .read<ProductsViewModel>()
                                                   .deleteProduct(
@@ -259,7 +252,9 @@ class _CategoryInputScreenState extends State<CategoryInputScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const AddProductScreen(),
+              builder: (context) => AddProductScreen(
+                fcmToken: widget.fcmToken,
+              ),
             ),
           );
         },

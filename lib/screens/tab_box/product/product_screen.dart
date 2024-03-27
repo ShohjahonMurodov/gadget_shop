@@ -1,6 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:gadget_shop/data/api_provider/api_provider.dart';
 import 'package:gadget_shop/data/category/category_models.dart';
 import 'package:gadget_shop/data/local/local_varibalse.dart';
 import 'package:gadget_shop/data/notification/notification_models.dart';
@@ -141,11 +140,6 @@ class _ProductScreenState extends State<ProductScreen> {
                               name:
                                   "${list[index].categoryName} category o'chirildi!",
                             );
-                            ApiProvider().sendNotificationToUsers(
-                              fcmToken: fcmToken,
-                              title: "${list[index].categoryName} o'chirildi!",
-                              body: "Batafsil malumot olish uchun.",
-                            );
                             context
                                 .read<CategoriesViewModel>()
                                 .deleteCategory(list[index].docId, context);
@@ -177,7 +171,9 @@ class _ProductScreenState extends State<ProductScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const AddScreen(),
+              builder: (context) => AddScreen(
+                fcmToken: fcmToken!,
+              ),
             ),
           );
         },

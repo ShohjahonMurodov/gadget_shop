@@ -15,7 +15,9 @@ import '../../data/local/local_varibalse.dart';
 import '../../view_models/message_view/message_view_model.dart';
 
 class AddProductScreen extends StatefulWidget {
-  const AddProductScreen({super.key});
+  const AddProductScreen({super.key, required this.fcmToken});
+
+  final String fcmToken;
 
   @override
   State<AddProductScreen> createState() => _AddProductScreenState();
