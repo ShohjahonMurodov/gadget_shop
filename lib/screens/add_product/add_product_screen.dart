@@ -38,6 +38,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.c_FDFEFF,
       body: Form(
         child: Padding(
@@ -111,10 +112,13 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     ),
                     child: Column(
                       children: [
-                        Image.network(
-                          imageUrl,
-                          width: 103.w,
-                          height: 95.h,
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.network(
+                            imageUrl,
+                            width: 103.w,
+                            height: 95.h,
+                          ),
                         ),
                         Text(
                           nameController.text,
