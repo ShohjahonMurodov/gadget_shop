@@ -11,7 +11,7 @@ class CategoriesViewModel extends ChangeNotifier {
 
   bool get getLoader => _isLoading;
 
-  List<CategoryModel> categories = [];
+  List<CategoryModels> categories = [];
 
   Future<void> getCategories() async {
     _notify(true);
@@ -20,21 +20,21 @@ class CategoriesViewModel extends ChangeNotifier {
         .get()
         .then((snapshot) {
       categories =
-          snapshot.docs.map((e) => CategoryModel.fromJson(e.data())).toList();
+          snapshot.docs.map((e) => CategoryModels.fromJson(e.data())).toList();
     });
     _notify(false);
   }
 
-  Stream<List<CategoryModel>> listenCategories() => FirebaseFirestore.instance
+  Stream<List<CategoryModels>> listenCategories() => FirebaseFirestore.instance
       .collection(AppConstants.categories)
       .snapshots()
       .map(
         (event) => event.docs
-            .map((doc) => CategoryModel.fromJson(doc.data()))
+            .map((doc) => CategoryModels.fromJson(doc.data()))
             .toList(),
       );
 
-  insertCategory(CategoryModel categoryModel, BuildContext context) async {
+  insertCategory(CategoryModels categoryModel, BuildContext context) async {
     try {
       _notify(true);
       var cf = await FirebaseFirestore.instance
@@ -62,7 +62,7 @@ class CategoriesViewModel extends ChangeNotifier {
     }
   }
 
-  updateCategory(CategoryModel categoryModel, BuildContext context) async {
+  updateCategory(CategoryModels categoryModel, BuildContext context) async {
     try {
       _notify(true);
       await FirebaseFirestore.instance

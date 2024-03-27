@@ -4,13 +4,15 @@ class ProductModel {
       required this.productName,
       required this.price,
       required this.categoryId,
-      required this.image});
+      required this.imageUrl,
+      required this.storagePath});
 
   final String docId;
   final String productName;
   final double price;
   final String categoryId;
-  final String image;
+  final String imageUrl;
+  final String storagePath;
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
@@ -18,7 +20,8 @@ class ProductModel {
       categoryId: json["category_id"] as String? ?? "",
       productName: json["product_name"] as String? ?? "",
       price: json["price"] as double? ?? 0.0,
-      image: json["image"] as String? ?? "",
+      imageUrl: json["image_url"] as String? ?? "",
+      storagePath: json["storage_path"] as String? ?? "",
     );
   }
 
@@ -28,7 +31,8 @@ class ProductModel {
       "product_name": productName,
       "price": price,
       "category_id": categoryId,
-      "image": image,
+      "image_url": imageUrl,
+      "storage_path": storagePath,
     };
   }
 
@@ -37,7 +41,8 @@ class ProductModel {
       "product_name": productName,
       "price": price,
       "category_id": categoryId,
-      "image": image,
+      "image_url": imageUrl,
+      "storage_path": storagePath,
     };
   }
 }

@@ -205,7 +205,7 @@ class _CategoryInputScreenState extends State<CategoryInputScreen> {
                             child: Column(
                               children: [
                                 Image.network(
-                                  list[index].image,
+                                  list[index].imageUrl,
                                   width: 103.w,
                                   height: 95.h,
                                 ),

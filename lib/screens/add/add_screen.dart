@@ -12,7 +12,6 @@ import 'package:gadget_shop/utils/size/size_utils.dart';
 import 'package:gadget_shop/view_models/category_view/category_view_model.dart';
 import 'package:gadget_shop/view_models/image_view/image_view_model.dart';
 import 'package:gadget_shop/view_models/message_view/message_view_model.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class AddScreen extends StatefulWidget {
@@ -28,10 +27,6 @@ class _AddScreenState extends State<AddScreen> {
   final formKey = GlobalKey<FormState>();
 
   final TextEditingController nameController = TextEditingController();
-  final ImagePicker picker = ImagePicker();
-
-  String imageUrl = "";
-  String storagePath = "";
 
   @override
   void dispose() {
@@ -74,38 +69,14 @@ class _AddScreenState extends State<AddScreen> {
                 errorText: "Nameni togri kiriting",
                 controller: nameController,
               ),
-              20.getH(),
-              GlobalBlueButton(
-                text: "Take an image",
-                onTap: () {
-                  takeAnImage();
-                },
-              ),
-              10.getH(),
-              if (context.watch<ImageViewModel>().getLoader)
-                const CircularProgressIndicator(),
-              if (imageUrl.isNotEmpty) Image.network(imageUrl),
               const Spacer(),
               GlobalBlueButton(
                 text: "Next",
-                onTap: () async {
-                  if (imageUrl.isNotEmpty && nameController.text.isNotEmpty) {
-                    await context.read<CategoriesViewModel>().insertCategory(
-                          CategoryModel(
-                            imageUrl: imageUrl,
-                            categoryName: nameController.text,
-                            docId: "",
-                            storagePath: storagePath,
-                          ),
-                          context,
-                        );
-                  }
+                onTap: () {
                   context.read<CategoriesViewModel>().insertCategory(
-                        CategoryModel(
+                        CategoryModels(
                           categoryName: nameController.text,
                           docId: "",
-                          imageUrl: imageUrl,
-                          storagePath: storagePath,
                         ),
                         context,
                       );
@@ -126,76 +97,5 @@ class _AddScreenState extends State<AddScreen> {
         ),
       ),
     );
-  }
-
-  Future<void> _getImageFromCamera() async {
-    XFile? image = await picker.pickImage(
-      source: ImageSource.camera,
-      maxHeight: 1024,
-      maxWidth: 1024,
-    );
-    if (image != null && context.mounted) {
-      debugPrint("IMAGE PATH:${image.path}");
-      storagePath = "files/images/${image.name}";
-      imageUrl = await context.read<ImageViewModel>().uploadImage(
-            pickedFile: image,
-            storagePath: storagePath,
-          );
-
-      debugPrint("DOWNLOAD URL:$imageUrl");
-    }
-  }
-
-  Future<void> _getImageFromGallery() async {
-    XFile? image = await picker.pickImage(
-      source: ImageSource.gallery,
-      maxHeight: 1024,
-      maxWidth: 1024,
-    );
-    if (image != null && context.mounted) {
-      debugPrint("IMAGE PATH:${image.path}");
-      storagePath = "files/images/${image.name}";
-      imageUrl = await context.read<ImageViewModel>().uploadImage(
-            pickedFile: image,
-            storagePath: storagePath,
-          );
-
-      debugPrint("DOWNLOAD URL:$imageUrl");
-    }
-  }
-
-  takeAnImage() {
-    showModalBottomSheet(
-        shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(16),
-          topRight: Radius.circular(16),
-        )),
-        context: context,
-        builder: (context) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(height: 12.h),
-              ListTile(
-                onTap: () async {
-                  await _getImageFromGallery();
-                  Navigator.pop(context);
-                },
-                leading: const Icon(Icons.photo_album_outlined),
-                title: const Text("Gallereyadan olish"),
-              ),
-              ListTile(
-                onTap: () async {
-                  await _getImageFromCamera();
-                  Navigator.pop(context);
-                },
-                leading: const Icon(Icons.camera_alt),
-                title: const Text("Kameradan olish"),
-              ),
-              SizedBox(height: 24.h),
-            ],
-          );
-        });
   }
 }

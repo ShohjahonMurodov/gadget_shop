@@ -72,9 +72,10 @@ class _UpdateScreenState extends State<UpdateScreen> {
                         ? widget.productModel.price
                         : double.parse(priceController.text),
                     categoryId: widget.productModel.categoryId,
-                    image: imageController.text.isEmpty
-                        ? widget.productModel.image
+                    imageUrl: imageController.text.isEmpty
+                        ? widget.productModel.imageUrl
                         : priceController.text,
+                    storagePath: "",
                   );
                   context
                       .read<ProductsViewModel>()

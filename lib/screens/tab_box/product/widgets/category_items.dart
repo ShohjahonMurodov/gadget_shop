@@ -4,15 +4,14 @@ import 'package:gadget_shop/utils/size/size_utils.dart';
 import '../../../../utils/colors/app_colors.dart';
 
 class CategoryItems extends StatelessWidget {
-  const CategoryItems(
-      {super.key,
-      required this.text,
-      required this.onTap,
-      required this.onLongTap,
-      required this.image});
+  const CategoryItems({
+    super.key,
+    required this.text,
+    required this.onTap,
+    required this.onLongTap,
+  });
 
   final String text;
-  final String image;
   final VoidCallback onTap;
   final VoidCallback onLongTap;
 
@@ -48,7 +47,6 @@ class CategoryItems extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.network(image),
               Text(
                 text,
                 style: TextStyle(

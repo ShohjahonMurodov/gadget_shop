@@ -8,7 +8,9 @@ import 'package:gadget_shop/utils/colors/app_colors.dart';
 import 'package:gadget_shop/utils/constants/app_constants.dart';
 import 'package:gadget_shop/utils/images/app_images.dart';
 import 'package:gadget_shop/utils/size/size_utils.dart';
+import 'package:gadget_shop/view_models/image_view/image_view_model.dart';
 import 'package:gadget_shop/view_models/product_view/product_view_model.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../data/local/local_varibalse.dart';
@@ -28,7 +30,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
-  final TextEditingController imageController = TextEditingController();
+  final ImagePicker picker = ImagePicker();
+
+  String imageUrl = "";
+  String storagePath = "";
 
   @override
   Widget build(BuildContext context) {
@@ -73,27 +78,83 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 controller: priceController,
               ),
               10.getH(),
-              ChangeTextFormField(
-                hintText: "Enter a image url",
-                textInputType: TextInputType.text,
-                regExp: RegExp(""),
-                errorText: "Image urlni togri kiriting",
-                controller: imageController,
+              GlobalBlueButton(
+                text: "Take an image",
+                onTap: () {
+                  takeAnImage();
+                },
               ),
+              20.getH(),
+              if (context.watch<ImageViewModel>().getLoader)
+                const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              10.getH(),
+              if (imageUrl.isNotEmpty)
+                Center(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.w,
+                      vertical: 16.h,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.white,
+                      borderRadius: BorderRadius.circular(6),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColors.black.withOpacity(.08),
+                          offset: Offset(0, 16.h),
+                          blurRadius: 24,
+                          spreadRadius: 0,
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        Image.network(
+                          imageUrl,
+                          width: 103.w,
+                          height: 95.h,
+                        ),
+                        Text(
+                          nameController.text,
+                          style: TextStyle(
+                            color: AppColors.c_0A1034,
+                            fontSize: 16.w,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        4.getH(),
+                        Text(
+                          "USD ${priceController.text.toString()}",
+                          style: TextStyle(
+                            color: AppColors.c_0001FC,
+                            fontSize: 12.w,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               30.getH(),
               GlobalBlueButton(
                 text: "Next",
-                onTap: () {
-                  context.read<ProductsViewModel>().insertProducts(
-                        ProductModel(
-                          price: double.parse(priceController.text),
-                          image: imageController.text,
-                          productName: nameController.text,
-                          docId: "",
-                          categoryId: "xEBTyIhhmVmDY4GuLYdz",
-                        ),
-                        context,
-                      );
+                onTap: () async {
+                  if (imageUrl.isNotEmpty &&
+                      nameController.text.isNotEmpty &&
+                      priceController.text.isNotEmpty) {
+                    await context.read<ProductsViewModel>().insertProducts(
+                          ProductModel(
+                              docId: "",
+                              productName: nameController.text,
+                              price: double.parse(priceController.text),
+                              categoryId: "xEBTyIhhmVmDY4GuLYdz",
+                              imageUrl: imageUrl,
+                              storagePath: storagePath),
+                          context,
+                        );
+                  }
                   context.read<MessageViewModels>().addMessage(
                         notificationModels: NotificationModels(
                           name:
@@ -110,5 +171,76 @@ class _AddProductScreenState extends State<AddProductScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _getImageFromCamera() async {
+    XFile? image = await picker.pickImage(
+      source: ImageSource.camera,
+      maxHeight: 1024,
+      maxWidth: 1024,
+    );
+    if (image != null && context.mounted) {
+      debugPrint("IMAGE PATH:${image.path}");
+      storagePath = "files/images/${image.name}";
+      imageUrl = await context.read<ImageViewModel>().uploadImage(
+            pickedFile: image,
+            storagePath: storagePath,
+          );
+
+      debugPrint("DOWNLOAD URL:$imageUrl");
+    }
+  }
+
+  Future<void> _getImageFromGallery() async {
+    XFile? image = await picker.pickImage(
+      source: ImageSource.gallery,
+      maxHeight: 1024,
+      maxWidth: 1024,
+    );
+    if (image != null && context.mounted) {
+      debugPrint("IMAGE PATH:${image.path}");
+      storagePath = "files/images/${image.name}";
+      imageUrl = await context.read<ImageViewModel>().uploadImage(
+            pickedFile: image,
+            storagePath: storagePath,
+          );
+
+      debugPrint("DOWNLOAD URL:$imageUrl");
+    }
+  }
+
+  takeAnImage() {
+    showModalBottomSheet(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16),
+        )),
+        context: context,
+        builder: (context) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: 12.h),
+              ListTile(
+                onTap: () async {
+                  await _getImageFromGallery();
+                  Navigator.pop(context);
+                },
+                leading: const Icon(Icons.photo_album_outlined),
+                title: const Text("Gallereyadan olish"),
+              ),
+              ListTile(
+                onTap: () async {
+                  await _getImageFromCamera();
+                  Navigator.pop(context);
+                },
+                leading: const Icon(Icons.camera_alt),
+                title: const Text("Kameradan olish"),
+              ),
+              SizedBox(height: 24.h),
+            ],
+          );
+        });
   }
 }

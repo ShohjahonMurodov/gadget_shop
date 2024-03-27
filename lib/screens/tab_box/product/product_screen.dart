@@ -104,7 +104,7 @@ class _ProductScreenState extends State<ProductScreen> {
         ],
       ),
       backgroundColor: AppColors.c_FDFEFF,
-      body: StreamBuilder<List<CategoryModel>>(
+      body: StreamBuilder<List<CategoryModels>>(
         stream: context.read<CategoriesViewModel>().listenCategories(),
         builder: (context, data) {
           if (data.hasError) {
@@ -115,7 +115,7 @@ class _ProductScreenState extends State<ProductScreen> {
             );
           }
           if (data.hasData) {
-            List<CategoryModel> list = data.data as List<CategoryModel>;
+            List<CategoryModels> list = data.data as List<CategoryModels>;
             return ListView(
               children: [
                 Padding(
@@ -137,7 +137,6 @@ class _ProductScreenState extends State<ProductScreen> {
                         list.length,
                         (index) => CategoryItems(
                           text: list[index].categoryName,
-                          image: list[index].imageUrl,
                           onTap: () {
                             Navigator.push(
                               context,
