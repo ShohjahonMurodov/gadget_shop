@@ -1,10 +1,12 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:gadget_shop/data/api_provider/api_provider.dart';
 import 'package:gadget_shop/data/category/category_models.dart';
 import 'package:gadget_shop/data/local/local_varibalse.dart';
 import 'package:gadget_shop/data/notification/notification_models.dart';
 import 'package:gadget_shop/screens/add/add_screen.dart';
 import 'package:gadget_shop/screens/category_input/category_input_screen.dart';
+import 'package:gadget_shop/screens/news/news_screen.dart';
 import 'package:gadget_shop/screens/tab_box/product/widgets/category_items.dart';
 import 'package:gadget_shop/services/local_notification_service.dart';
 import 'package:gadget_shop/utils/colors/app_colors.dart';
@@ -21,7 +23,7 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
-  String fcmToken = "";
+  String? fcmToken = "";
 
   void init() async {
     fcmToken = await FirebaseMessaging.instance.getToken() ?? "";
@@ -69,6 +71,25 @@ class _ProductScreenState extends State<ProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.transparent,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const NewsScreen(),
+                ),
+              );
+            },
+            icon: const Icon(
+              Icons.new_label_sharp,
+              color: Colors.black,
+            ),
+          ),
+        ],
+      ),
       backgroundColor: AppColors.c_FDFEFF,
       body: StreamBuilder<List<CategoryModels>>(
         stream: context.read<CategoriesViewModel>().listenCategories(),
@@ -89,7 +110,7 @@ class _ProductScreenState extends State<ProductScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      80.getH(),
+                      24.getH(),
                       Text(
                         "Categories",
                         style: TextStyle(
@@ -107,8 +128,9 @@ class _ProductScreenState extends State<ProductScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    const CategoryInputScreen(),
+                                builder: (context) => CategoryInputScreen(
+                                  fcmToken: fcmToken!,
+                                ),
                               ),
                             );
                           },
@@ -118,6 +140,11 @@ class _ProductScreenState extends State<ProductScreen> {
                               id: idContLocal,
                               name:
                                   "${list[index].categoryName} category o'chirildi!",
+                            );
+                            ApiProvider().sendNotificationToUsers(
+                              fcmToken: fcmToken,
+                              title: "${list[index].categoryName} o'chirildi!",
+                              body: "Batafsil malumot olish uchun.",
                             );
                             context
                                 .read<CategoriesViewModel>()

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gadget_shop/data/api_provider/api_provider.dart';
 import 'package:gadget_shop/data/local/local_varibalse.dart';
 import 'package:gadget_shop/data/notification/notification_models.dart';
 import 'package:gadget_shop/data/product/product_model.dart';
@@ -13,7 +14,9 @@ import 'package:gadget_shop/view_models/product_view/product_view_model.dart';
 import 'package:provider/provider.dart';
 
 class CategoryInputScreen extends StatefulWidget {
-  const CategoryInputScreen({super.key});
+  const CategoryInputScreen({super.key, required this.fcmToken});
+
+  final String fcmToken;
 
   @override
   State<CategoryInputScreen> createState() => _CategoryInputScreenState();
@@ -115,6 +118,12 @@ class _CategoryInputScreenState extends State<CategoryInputScreen> {
                                               ),
                                             ),
                                             onPressed: () {
+                                              ApiProvider()
+                                                  .sendNotificationToUsers(
+                                                fcmToken: widget.fcmToken,
+                                                title: "Product o'chirildi!",
+                                                body: "",
+                                              );
                                               context
                                                   .read<ProductsViewModel>()
                                                   .deleteProduct(
