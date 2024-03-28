@@ -1,10 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:gadget_shop/data/local/local_varibalse.dart';
 import 'package:gadget_shop/screens/account_info/account_info_screen.dart';
 import 'package:gadget_shop/screens/tab_box/profile/widgets/profile_items.dart';
 import 'package:gadget_shop/utils/colors/app_colors.dart';
 import 'package:gadget_shop/utils/size/size_utils.dart';
 import 'package:gadget_shop/view_models/auth_view/auth_view_models.dart';
+import 'package:gadget_shop/view_models/image_view/image_view_model.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -15,6 +19,9 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  final picker = ImagePicker();
+  String storagePath = "";
+
   @override
   Widget build(BuildContext context) {
     User? user = context.watch<AuthViewModel>().getUser;
@@ -46,11 +53,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 24.getH(),
                 Row(
                   children: [
-                    CircleAvatar(
-                      backgroundColor: AppColors.c_0A1034,
-                      maxRadius: 40,
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
                       child: Image.network(
-                          "https://www.tenforums.com/attachments/tutorials/146359d1501443008-change-default-account-picture-windows-10-a-user.png"),
+                        imageUrl,
+                        width: 70.w,
+                        height: 70.h,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                     16.getW(),
                     Column(

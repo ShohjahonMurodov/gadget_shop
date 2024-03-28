@@ -6,3 +6,4 @@ List<CategoryModels> globalCategories = [];
 List<ProductModel> globalProducts = [];
 late AnimationController globalAnimationController;
 int idContLocal = 1;
+String imageUrl = "";

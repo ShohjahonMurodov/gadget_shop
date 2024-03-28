@@ -120,7 +120,7 @@ class _CategoryInputScreenState extends State<CategoryInputScreen> {
                                               context
                                                   .read<ProductsViewModel>()
                                                   .deleteProduct(
-                                                    list[index].docId,
+                                                    list[index],
                                                     context,
                                                   );
                                               context

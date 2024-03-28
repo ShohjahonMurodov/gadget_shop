@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gadget_shop/data/local/local_varibalse.dart';
 import 'package:gadget_shop/screens/login/login_screen.dart';
+import 'package:gadget_shop/screens/widgets/global_blue_button.dart';
 import 'package:gadget_shop/screens/widgets/global_textbuttons.dart';
 import 'package:gadget_shop/screens/widgets/text_button_items.dart';
 import 'package:gadget_shop/screens/widgets/textformfield_items.dart';
@@ -7,6 +9,8 @@ import 'package:gadget_shop/utils/colors/app_colors.dart';
 import 'package:gadget_shop/utils/constants/app_constants.dart';
 import 'package:gadget_shop/utils/size/size_utils.dart';
 import 'package:gadget_shop/view_models/auth_view/auth_view_models.dart';
+import 'package:gadget_shop/view_models/image_view/image_view_model.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -22,6 +26,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController fullNameController = TextEditingController();
+
+  final picker = ImagePicker();
+  String storagePath = "";
 
   @override
   void dispose() {
@@ -111,6 +118,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       regExp: AppConstants.textRegExp,
                       errorText: "Passwordni togri kiriting",
                     ),
+                    24.getH(),
+                    GlobalBlueButton(
+                      text: "Take an image",
+                      onTap: () {
+                        takeAnImage();
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -122,6 +136,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     GlobalTextButton(
                       text: "Validate",
                       onTap: () {
+                        print("Image url: $imageUrl");
                         context.read<AuthViewModel>().registerUser(context,
                             email: emailController.text,
                             password: passwordController.text,
@@ -161,5 +176,76 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _getImageFromCamera() async {
+    XFile? image = await picker.pickImage(
+      source: ImageSource.camera,
+      maxHeight: 1024,
+      maxWidth: 1024,
+    );
+    if (image != null && context.mounted) {
+      debugPrint("IMAGE PATH:${image.path}");
+      storagePath = "files/images/${image.name}";
+      imageUrl = await context.read<ImageViewModel>().uploadImage(
+            pickedFile: image,
+            storagePath: storagePath,
+          );
+
+      debugPrint("DOWNLOAD URL:$imageUrl");
+    }
+  }
+
+  Future<void> _getImageFromGallery() async {
+    XFile? image = await picker.pickImage(
+      source: ImageSource.gallery,
+      maxHeight: 1024,
+      maxWidth: 1024,
+    );
+    if (image != null && context.mounted) {
+      debugPrint("IMAGE PATH:${image.path}");
+      storagePath = "files/images/${image.name}";
+      imageUrl = await context.read<ImageViewModel>().uploadImage(
+            pickedFile: image,
+            storagePath: storagePath,
+          );
+
+      debugPrint("DOWNLOAD URL:$imageUrl");
+    }
+  }
+
+  takeAnImage() {
+    showModalBottomSheet(
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16),
+        )),
+        context: context,
+        builder: (context) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: 12.h),
+              ListTile(
+                onTap: () async {
+                  await _getImageFromGallery();
+                  Navigator.pop(context);
+                },
+                leading: const Icon(Icons.photo_album_outlined),
+                title: const Text("Gallereyadan olish"),
+              ),
+              ListTile(
+                onTap: () async {
+                  await _getImageFromCamera();
+                  Navigator.pop(context);
+                },
+                leading: const Icon(Icons.camera_alt),
+                title: const Text("Kameradan olish"),
+              ),
+              SizedBox(height: 24.h),
+            ],
+          );
+        });
   }
 }

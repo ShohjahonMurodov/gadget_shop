@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:gadget_shop/data/local/local_varibalse.dart';
 import 'package:gadget_shop/data/product/product_model.dart';
@@ -86,16 +88,18 @@ class ProductsViewModel extends ChangeNotifier {
     }
   }
 
-  deleteProduct(String docId, BuildContext context) async {
+  deleteProduct(ProductModel productModel, BuildContext context) async {
     try {
       _notify(true);
       await FirebaseFirestore.instance
           .collection(AppConstants.products)
-          .doc(docId)
+          .doc(productModel.docId)
           .delete();
 
+      FirebaseStorage.instance.ref().child(productModel.storagePath).delete();
+
       LocalNotificationService().showNatification(
-        title: "$docId dagi ma'lumot o'chirib yuborildi!",
+        title: "${productModel.docId} dagi ma'lumot o'chirib yuborildi!",
         body: "Batafsil bilish uchun, ustidan bosing.",
         id: idContLocal,
       );
